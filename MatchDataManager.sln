@@ -5,15 +5,15 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchDataManager.Api", "MatchDataManager.Api\MatchDataManager.Api.csproj", "{29743F0C-25E4-4253-A539-95DA0E3332F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchDataManager.UnitTests", "MatchDataManager.UnitTests\MatchDataManager.UnitTests.csproj", "{56F51546-D243-4643-A67F-E49E54B3DE23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchDataManager.UnitTests", "MatchDataManager.UnitTests\MatchDataManager.UnitTests.csproj", "{56F51546-D243-4643-A67F-E49E54B3DE23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchDataManager.Domain", "MatchDataManager.Domain\MatchDataManager.Domain.csproj", "{AC120F57-52A6-4088-BF31-F3636642EF35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchDataManager.Domain", "MatchDataManager.Domain\MatchDataManager.Domain.csproj", "{AC120F57-52A6-4088-BF31-F3636642EF35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchDataManager.Infrastructure", "MatchDataManager.Infrastructure\MatchDataManager.Infrastructure.csproj", "{58545C2A-0AEE-4D31-9BE1-A7B7ABC11F4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchDataManager.Infrastructure", "MatchDataManager.Infrastructure\MatchDataManager.Infrastructure.csproj", "{58545C2A-0AEE-4D31-9BE1-A7B7ABC11F4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchDataManager.Application", "MatchDataManager.Application\MatchDataManager.Application.csproj", "{8366219B-87BE-4D0E-84ED-87097CBB317A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchDataManager.Application", "MatchDataManager.Application\MatchDataManager.Application.csproj", "{8366219B-87BE-4D0E-84ED-87097CBB317A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchDataManager.Contracts", "MatchDataManager.Contracts\MatchDataManager.Contracts.csproj", "{4873A47D-A2C1-44EE-AD69-68E61F3319B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatchDataManager.Contracts", "MatchDataManager.Contracts\MatchDataManager.Contracts.csproj", "{4873A47D-A2C1-44EE-AD69-68E61F3319B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
