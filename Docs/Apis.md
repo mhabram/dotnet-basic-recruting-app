@@ -95,7 +95,7 @@ GET {{host}}/api/locations/{{id}}
 ```json
 {
     "Name": "GL",
-    "City": "Gliwice
+    "City": "Gliwice"
 }
 ```
 
