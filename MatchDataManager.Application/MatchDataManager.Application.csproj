@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MatchDataManager.Domain\MatchDataManager.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

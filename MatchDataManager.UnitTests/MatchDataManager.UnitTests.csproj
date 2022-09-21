@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MatchDataManager.Application\MatchDataManager.Application.csproj" />
+  </ItemGroup>
+
 </Project>
