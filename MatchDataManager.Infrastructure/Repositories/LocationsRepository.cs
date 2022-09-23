@@ -1,4 +1,5 @@
-﻿using MatchDataManager.Domain.Entities;
+﻿using MatchDataManager.Application.Common.Interfaces.Persistence;
+using MatchDataManager.Domain.Entities;
 
 namespace MatchDataManager.Infrastructure.Repositories;
 
@@ -6,10 +7,17 @@ public static class LocationsRepository
 {
     private static readonly List<Location> _locations = new();
 
-    public static void AddLocation(Location location)
+    internal static void Add(Location location)
     {
-        location.Id = Guid.NewGuid();
         _locations.Add(location);
+    }
+
+    public static bool GetLocationByName(string name)
+    {
+        var location = _locations.FirstOrDefault(x =>
+            x.Name.Trim().ToLower() == name.Trim().ToLower());
+
+        return location != null;
     }
 
     public static void DeleteLocation(Guid locationId)
