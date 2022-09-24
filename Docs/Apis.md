@@ -37,6 +37,14 @@ POST {{host}}/api/locations
 201 Ok
 ```
 
+```json
+{
+  "Id": "28b02e66-5181-44b2-848f-29f4f3867d3e",
+  "Name": "GL",
+  "City": "Gliwice"
+}
+```
+
 ### Delete Location
 
 #### Delete Request
@@ -94,8 +102,8 @@ GET {{host}}/api/locations/{{id}}
 
 ```json
 {
-    "Name": "GL",
-    "City": "Gliwice"
+  "Name": "GL",
+  "City": "Gliwice"
 }
 ```
 
@@ -134,6 +142,14 @@ POST {{host}}/api/teams
 
 ```js
 201 Ok
+```
+
+```json
+{
+  "Id": "28b02e66-5181-44b2-848f-29f4f3867d3e",
+  "Name": "Gliwice Team",
+  "CoachName": "Karol"
+}
 ```
 
 ### Delete Team

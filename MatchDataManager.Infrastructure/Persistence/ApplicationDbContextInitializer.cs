@@ -21,13 +21,7 @@ public class ApplicationDbContextInitializer
     {
         try
         {
-            string directoryPath = string.Concat(
-                Environment.CurrentDirectory,
-                "\\",
-                configuration["DirectoryDatabase"]);
-
-            if (!Directory.Exists(directoryPath))
-                Directory.CreateDirectory(directoryPath);
+            CreateDbFolderIfNotExists(configuration);
 
             if (_context.Database.IsSqlite())
                 await _context.Database.MigrateAsync();
@@ -37,5 +31,16 @@ public class ApplicationDbContextInitializer
             _logger.LogError(ex, "An error occurred while initializing the database.");
             throw;
         }
+    }
+
+    private static void CreateDbFolderIfNotExists(IConfiguration configuration)
+    {
+        string directoryPath = string.Concat(
+            Environment.CurrentDirectory,
+            "\\",
+            configuration["DirectoryDatabase"]);
+
+        if (!Directory.Exists(directoryPath))
+            Directory.CreateDirectory(directoryPath);
     }
 }

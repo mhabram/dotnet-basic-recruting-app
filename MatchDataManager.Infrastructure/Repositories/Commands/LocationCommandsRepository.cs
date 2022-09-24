@@ -42,6 +42,9 @@ public class LocationCommandsRepository : ILocationCommandsRepository
         var existingLocation = await _locationQueriesRepository
             .GetLocationByIdAsync(location.Id, cancellationToken);
 
+        existingLocation.Name = location.Name;
+        existingLocation.City = location.City;
+
         _context.Locations.Update(existingLocation);
 
         await _context.SaveChangesAsync(cancellationToken);
