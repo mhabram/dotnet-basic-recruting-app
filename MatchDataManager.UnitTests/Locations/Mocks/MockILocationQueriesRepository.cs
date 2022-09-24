@@ -1,5 +1,6 @@
 ﻿using MatchDataManager.Application.Common.Interfaces.Persistence.Queries;
 using Moq;
+using System.Threading;
 
 namespace MatchDataManager.UnitTests.Locations.Mocks;
 
@@ -11,7 +12,8 @@ internal static class MockILocationQueriesRepository
 
         mockLocationQueriesRepository
             .Setup(s =>
-                s.IsUniqueName(It.IsAny<string>()))
+                s.IsUniqueLocationName(It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
                 .ReturnsAsync(false);
 
         return mockLocationQueriesRepository.Object;
@@ -23,7 +25,8 @@ internal static class MockILocationQueriesRepository
 
         mockLocationQueriesRepository
             .Setup(s =>
-                s.IsUniqueName(It.IsAny<string>()))
+                s.IsUniqueLocationName(It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
                 .ReturnsAsync(true);
 
         return mockLocationQueriesRepository.Object;

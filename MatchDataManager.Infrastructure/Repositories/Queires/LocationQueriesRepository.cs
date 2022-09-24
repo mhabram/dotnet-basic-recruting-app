@@ -1,22 +1,38 @@
-﻿using MatchDataManager.Application.Common.Interfaces.Persistence.Queries;
+﻿using MatchDataManager.Application.Common.Interfaces.Persistence;
+using MatchDataManager.Application.Common.Interfaces.Persistence.Queries;
 using MatchDataManager.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace MatchDataManager.Infrastructure.Repositories.Queires;
 
 public class LocationQueriesRepository : ILocationQueriesRepository
 {
-    public async Task<Location> GetLocationAsync(Guid id, CancellationToken cancellationToken = default)
+    private readonly IApplicationDbContext _context;
+
+    public LocationQueriesRepository(IApplicationDbContext context)
     {
-        return LocationsRepository.GetLocationById(id);
+        _context = context;
+    }
+
+    public async Task<Location?> GetLocationByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Locations
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<IEnumerable<Location>> GetLocationsAsync(CancellationToken cancellationToken = default)
     {
-        return LocationsRepository.GetAllLocations();
+        return await _context.Locations
+            .ToListAsync(cancellationToken);
     }
 
-    public async Task<bool> IsUniqueName(string name)
+    public async Task<bool> IsUniqueLocationName(string name, CancellationToken cancellationToken = default)
     {
-        return LocationsRepository.GetLocationByName(name);
+        var location = await _context.Locations
+            .FirstOrDefaultAsync(x =>
+                x.Name.Trim().ToLower() == name.Trim().ToLower(),
+                cancellationToken);
+
+        return location != null;
     }
 }

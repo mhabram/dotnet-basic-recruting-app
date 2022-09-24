@@ -21,8 +21,8 @@ public class CreateLocationCommandValidator : AbstractValidator<CreateLocationCo
             .MaximumLength(55).WithMessage("Length can't be longer than 55.");
     }
 
-    private async Task<bool> IsUniqueName(string name, CancellationToken arg2)
+    private async Task<bool> IsUniqueName(string name, CancellationToken cancellationToken)
     {
-        return await _locationQueriesRepository.IsUniqueName(name);
+        return await _locationQueriesRepository.IsUniqueLocationName(name, cancellationToken);
     }
 }

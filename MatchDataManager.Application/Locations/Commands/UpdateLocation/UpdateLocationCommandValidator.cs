@@ -24,8 +24,8 @@ public class UpdateLocationCommandValidator : AbstractValidator<UpdateLocationCo
             .MaximumLength(55);
     }
 
-    private async Task<bool> IsUniqueName(string name, CancellationToken arg2)
+    private async Task<bool> IsUniqueName(string name, CancellationToken cancellationToken)
     {
-        return await _locationQueriesRepository.IsUniqueName(name);
+        return await _locationQueriesRepository.IsUniqueLocationName(name, cancellationToken);
     }
 }
