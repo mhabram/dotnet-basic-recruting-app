@@ -15,7 +15,7 @@ public class GetLocationQueryHandler : IRequestHandler<GetLocationQuery, Locatio
 
     public async Task<Location> Handle(GetLocationQuery request, CancellationToken cancellationToken)
     {
-        var locationsEntity = await _locationQueriesRepository.GetLocationAsync(request.Id, cancellationToken);
+        var locationsEntity = await _locationQueriesRepository.GetLocationByIdAsync(request.Id, cancellationToken);
         
         return locationsEntity;
     }

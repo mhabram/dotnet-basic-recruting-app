@@ -1,22 +1,49 @@
-﻿using MatchDataManager.Application.Common.Interfaces.Persistence.Commands;
+﻿using MatchDataManager.Application.Common.Interfaces.Persistence;
+using MatchDataManager.Application.Common.Interfaces.Persistence.Commands;
+using MatchDataManager.Application.Common.Interfaces.Persistence.Queries;
 using MatchDataManager.Domain.Entities;
 
 namespace MatchDataManager.Infrastructure.Repositories.Commands;
 
 public class LocationCommandsRepository : ILocationCommandsRepository
 {
+    private readonly IApplicationDbContext _context;
+    private readonly ILocationQueriesRepository _locationQueriesRepository;
+
+    public LocationCommandsRepository(
+        IApplicationDbContext context,
+        ILocationQueriesRepository locationQueriesRepository)
+    {
+        _context = context;
+        _locationQueriesRepository = locationQueriesRepository;
+    }
+
+
     public async Task CreateLocationAsync(Location location, CancellationToken cancellationToken = default)
     {
-        LocationsRepository.Add(location);
+        await _context.Locations
+            .AddAsync(location, cancellationToken);
+        
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteLocation(Guid id)
+    public async Task DeleteLocation(Guid id, CancellationToken cancellationToken = default)
     {
-        LocationsRepository.DeleteLocation(id);
+        var existingLocation = await _locationQueriesRepository
+            .GetLocationByIdAsync(id, cancellationToken);
+
+        _context.Locations.Remove(existingLocation);
+
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateLocationAsync(Location location)
+    public async Task UpdateLocationAsync(Location location, CancellationToken cancellationToken = default)
     {
-        LocationsRepository.UpdateLocation(location);
+        var existingLocation = await _locationQueriesRepository
+            .GetLocationByIdAsync(location.Id, cancellationToken);
+
+        _context.Locations.Update(existingLocation);
+
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }
