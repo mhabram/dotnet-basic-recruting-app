@@ -4,6 +4,7 @@ using MatchDataManager.UnitTests.Locations.Mocks;
 using System;
 using System.Collections.Generic;
 using Xunit;
+using static MatchDataManager.Domain.Common.Constants.ErrorMessages;
 
 namespace MatchDataManager.UnitTests.Locations.Commands.UpdateLocation;
 
@@ -14,8 +15,8 @@ public class UpdateLocationCommandTests
 
     public UpdateLocationCommandTests()
     {
-        _locationQueriesRepositoryUniqueNameTrue = MockILocationQueriesRepository.GetLocationUniqueNameTrue();
-        _locationQueriesRepositoryUniqueNameFalse = MockILocationQueriesRepository.GetLocationUniqueNameFalse();
+        _locationQueriesRepositoryUniqueNameTrue = MockILocationQueriesRepository.GetLocationUniqueName(true);
+        _locationQueriesRepositoryUniqueNameFalse = MockILocationQueriesRepository.GetLocationUniqueName(false);
     }
 
     [Theory]
@@ -38,7 +39,7 @@ public class UpdateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals("Unique name is required.");
+        result.Equals(Name.NotEmpty);
     }
 
     [Fact]
@@ -53,7 +54,7 @@ public class UpdateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals("Length can't be longer than 255.");
+        result.Equals(Name.MaximumLength);
     }
 
     [Fact]
@@ -68,16 +69,16 @@ public class UpdateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals("Length can't be longer than 55.");
+        result.Equals(City.MaximumLength);
     }
 
     public static IEnumerable<object[]> UpdateLocationCommandTestData()
     {
-        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), " ", "Gliwice"), "Name field is required." };
-        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), "", "Rybnik"), "Name field is required." };
-        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), null, "Katowice"), "Name field is required." };
-        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), "GL", ""), "City field is required." };
-        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), "RK", null), "City field is required." };
-        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), "KRK", " "), "City field is required." };
+        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), " ", "Gliwice"), Name.NotEmpty };
+        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), "", "Rybnik"), Name.NotEmpty };
+        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), null, "Katowice"), Name.NotEmpty };
+        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), "GL", ""), City.NotEmpty };
+        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), "RK", null), City.NotEmpty };
+        yield return new object[] { new UpdateLocationCommand(Guid.NewGuid(), "KRK", " "), City.NotEmpty };
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MatchDataManager.Domain.Common.Constants;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -28,7 +29,7 @@ public class ApplicationDbContextInitializer
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while initializing the database.");
+            _logger.LogError(ex, ErrorMessages.Exception.ErrorOccurred);
             throw;
         }
     }

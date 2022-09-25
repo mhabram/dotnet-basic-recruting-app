@@ -21,6 +21,6 @@ public class UpdateLocationCommandHandler : IRequestHandler<UpdateLocationComman
                 request.Name,
                 request.City));
 
-        return Unit.Value;
+        return await Task.FromResult(Unit.Value);
     }
 }

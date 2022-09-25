@@ -19,13 +19,13 @@ public class LocationsController : ApiControllerBase
             request.City));
 
         return CreatedAtAction(
-            nameof(GetLocation),
+            nameof(GetLocationById),
             new { id = location.Id},
             MapLocationResponse(location));
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetLocation(Guid id)
+    public async Task<IActionResult> GetLocationById(Guid id)
     {
         var location = await Mediator.Send(new GetLocationQuery(id));
 
@@ -33,7 +33,7 @@ public class LocationsController : ApiControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetLocations()
+    public async Task<IActionResult> Get()
     {
         var locations = await Mediator.Send(new GetLocationsQuery());
 
@@ -64,10 +64,7 @@ public class LocationsController : ApiControllerBase
         var locationList = new List<LocationResponse>();
 
         foreach (var location in locations)
-            locationList.Add(new LocationResponse(
-                location.Id,
-                location.Name,
-                location.City));
+            locationList.Add(MapLocationResponse(location));
 
         return locationList;
     }

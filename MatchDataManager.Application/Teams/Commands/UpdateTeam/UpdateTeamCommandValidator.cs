@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MatchDataManager.Application.Common.Interfaces.Persistence.Queries;
+using static MatchDataManager.Domain.Common.Constants.ErrorMessages;
 
 namespace MatchDataManager.Application.Teams.Commands.UpdateTeam;
 
@@ -12,16 +13,16 @@ public class UpdateTeamCommandValidator : AbstractValidator<UpdateTeamCommand>
         _teamQueriesReporitory = teamQueriesReporitory;
 
         RuleFor(t => t.Id)
-            .NotEmpty();
+            .NotEmpty().WithMessage(Id.NotEmpty);
 
         RuleFor(t => t.Name)
-            .NotEmpty().WithMessage("Name field is required.")
-            .MaximumLength(255).WithMessage("Length can't be longer than 255.")
-            .MustAsync(IsUniqueName).WithMessage("Unique name is required.");
+            .NotEmpty().WithMessage(Name.NotEmpty)
+            .MaximumLength(255).WithMessage(Name.MaximumLength)
+            .MustAsync(IsUniqueName).WithMessage(Name.IsUnique);
 
         RuleFor(t => t.CoachName)
-            .NotEmpty().WithMessage("Coach name field is required.")
-            .MaximumLength(55).WithMessage("Length can't be longer than 255.");
+            .NotEmpty().WithMessage(CoachName.NotEmpty)
+            .MaximumLength(55).WithMessage(CoachName.MaximumLength);
     }
 
     private async Task<bool> IsUniqueName(string name, CancellationToken cancellationToken)

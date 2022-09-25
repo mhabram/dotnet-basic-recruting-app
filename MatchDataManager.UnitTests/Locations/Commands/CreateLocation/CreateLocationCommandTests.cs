@@ -1,10 +1,9 @@
 ﻿using MatchDataManager.Application.Common.Interfaces.Persistence.Queries;
 using MatchDataManager.Application.Locations.Commands.CreateLocation;
 using MatchDataManager.UnitTests.Locations.Mocks;
-using Moq;
-using System;
 using System.Collections.Generic;
 using Xunit;
+using static MatchDataManager.Domain.Common.Constants.ErrorMessages;
 
 namespace MatchDataManager.UnitTests.Locations.Commands.CreateLocation;
 
@@ -15,8 +14,8 @@ public class CreateLocationCommandTests
 
     public CreateLocationCommandTests()
     {
-        _locationQueriesRepositoryUniqueNameTrue = MockILocationQueriesRepository.GetLocationUniqueNameTrue();
-        _locationQueriesRepositoryUniqueNameFalse = MockILocationQueriesRepository.GetLocationUniqueNameFalse();
+        _locationQueriesRepositoryUniqueNameTrue = MockILocationQueriesRepository.GetLocationUniqueName(true);
+        _locationQueriesRepositoryUniqueNameFalse = MockILocationQueriesRepository.GetLocationUniqueName(false);
     }
 
     [Theory]
@@ -39,7 +38,7 @@ public class CreateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals("Unique name is required.");
+        result.Equals(Name.IsUnique);
     }
 
     [Fact]
@@ -52,7 +51,7 @@ public class CreateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals("Length can't be longer than 255.");
+        result.Equals(Name.MaximumLength);
     }
 
     [Fact]
@@ -65,17 +64,17 @@ public class CreateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals("Length can't be longer than 55.");
+        result.Equals(City.MaximumLength);
     }
 
     public static IEnumerable<object[]> CreateLocationCommandTestData()
     {
-        yield return new object[] { new CreateLocationCommand(" ", "Gliwice"), "Name field is required." };
-        yield return new object[] { new CreateLocationCommand("", "Rybnik"), "Name field is required." };
-        yield return new object[] { new CreateLocationCommand(null, "Katowice"), "Name field is required." };
-        yield return new object[] { new CreateLocationCommand("GL", ""), "City field is required." };
-        yield return new object[] { new CreateLocationCommand("RK", null), "City field is required." };
-        yield return new object[] { new CreateLocationCommand("KRK", " "), "City field is required." };
+        yield return new object[] { new CreateLocationCommand(" ", "Gliwice"), Name.NotEmpty };
+        yield return new object[] { new CreateLocationCommand("", "Rybnik"), Name.NotEmpty };
+        yield return new object[] { new CreateLocationCommand(null, "Katowice"), Name.NotEmpty };
+        yield return new object[] { new CreateLocationCommand("GL", ""), City.NotEmpty };
+        yield return new object[] { new CreateLocationCommand("RK", null), City.NotEmpty };
+        yield return new object[] { new CreateLocationCommand("KRK", " "), City.NotEmpty };
     }
 
 }

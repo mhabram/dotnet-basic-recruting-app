@@ -29,23 +29,23 @@ public class LocationCommandsRepository : ILocationCommandsRepository
 
     public async Task DeleteLocation(Guid id, CancellationToken cancellationToken = default)
     {
-        var existingLocation = await _locationQueriesRepository
+        var locationEntity = await _locationQueriesRepository
             .GetLocationByIdAsync(id, cancellationToken);
 
-        _context.Locations.Remove(existingLocation);
+        _context.Locations.Remove(locationEntity);
 
         await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task UpdateLocationAsync(Location location, CancellationToken cancellationToken = default)
     {
-        var existingLocation = await _locationQueriesRepository
+        var locationEntity = await _locationQueriesRepository
             .GetLocationByIdAsync(location.Id, cancellationToken);
 
-        existingLocation.Name = location.Name;
-        existingLocation.City = location.City;
+        locationEntity.Name = location.Name;
+        locationEntity.City = location.City;
 
-        _context.Locations.Update(existingLocation);
+        _context.Locations.Update(locationEntity);
 
         await _context.SaveChangesAsync(cancellationToken);
     }
