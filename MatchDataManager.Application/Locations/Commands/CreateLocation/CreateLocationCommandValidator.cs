@@ -23,6 +23,6 @@ public class CreateLocationCommandValidator : AbstractValidator<CreateLocationCo
 
     private async Task<bool> IsUniqueName(string name, CancellationToken cancellationToken)
     {
-        return await _locationQueriesRepository.IsUniqueLocationName(name, cancellationToken);
+        return await _locationQueriesRepository.IsUniqueLocationNameAsync(name, cancellationToken);
     }
 }
