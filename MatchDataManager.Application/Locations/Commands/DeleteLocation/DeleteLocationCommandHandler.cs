@@ -16,6 +16,6 @@ public class DeleteLocationCommandHandler : IRequestHandler<DeleteLocationComman
     {
         await _locationCommandsRepository.DeleteLocation(request.Id);
 
-        return Unit.Value;
+        return await Task.FromResult(Unit.Value);
     }
 }

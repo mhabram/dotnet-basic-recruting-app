@@ -8,7 +8,9 @@ internal class MockITeamQueriesRepository
 {
     internal static ITeamQueriesRepository GetTeamUniqueName(bool isUniqueName)
     {
-        var mockTeamQueriesRepository = new Mock<ITeamQueriesRepository>()
+        var mockTeamQueriesRepository = new Mock<ITeamQueriesRepository>();
+
+        mockTeamQueriesRepository
             .Setup(s =>
                 s.IsUniqueTeamNameAsync(
                     It.IsAny<string>(),

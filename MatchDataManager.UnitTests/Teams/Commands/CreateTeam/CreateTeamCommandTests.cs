@@ -3,6 +3,7 @@ using MatchDataManager.Application.Teams.Commands.CreateTeam;
 using MatchDataManager.UnitTests.Teams.Mocks;
 using System.Collections.Generic;
 using Xunit;
+using static MatchDataManager.Domain.Common.Constants.ErrorMessages;
 
 namespace MatchDataManager.UnitTests.Teams.Commands.CreateTeam;
 
@@ -38,7 +39,7 @@ public class CreateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals("Unique name is required.");
+        result.Equals(Name.NotEmpty);
     }
 
     [Fact]
@@ -51,7 +52,7 @@ public class CreateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals("Length can't be longer than 255.");
+        result.Equals(Name.MaximumLength);
     }
 
     [Fact]
@@ -64,16 +65,16 @@ public class CreateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals("Length can't be longer than 55.");
+        result.Equals(CoachName.MaximumLength);
     }
 
     public static IEnumerable<object[]> CreateTeamCommandTestData()
     {
-        yield return new object[] { new CreateTeamCommand("", "Karol"), "Name field is required." };
-        yield return new object[] { new CreateTeamCommand(" ", "Dawid"), "Name field is required." };
-        yield return new object[] { new CreateTeamCommand(null, "Patryk"), "Name field is required." };
-        yield return new object[] { new CreateTeamCommand("GL Team", ""), "Coach name field is required." };
-        yield return new object[] { new CreateTeamCommand("RK Team", " "), "Coach name field is required." };
-        yield return new object[] { new CreateTeamCommand("KRK Team", null), "Coach name field is required." };
+        yield return new object[] { new CreateTeamCommand("", "Karol"), Name.NotEmpty };
+        yield return new object[] { new CreateTeamCommand(" ", "Dawid"), Name.NotEmpty };
+        yield return new object[] { new CreateTeamCommand(null, "Patryk"), Name.NotEmpty };
+        yield return new object[] { new CreateTeamCommand("GL Team", ""), CoachName.NotEmpty };
+        yield return new object[] { new CreateTeamCommand("RK Team", " "), CoachName.NotEmpty };
+        yield return new object[] { new CreateTeamCommand("KRK Team", null), CoachName.NotEmpty };
     }
 }

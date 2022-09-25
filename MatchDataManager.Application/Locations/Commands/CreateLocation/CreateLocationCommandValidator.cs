@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MatchDataManager.Application.Common.Interfaces.Persistence.Queries;
+using static MatchDataManager.Domain.Common.Constants.ErrorMessages;
 
 namespace MatchDataManager.Application.Locations.Commands.CreateLocation;
 
@@ -12,13 +13,13 @@ public class CreateLocationCommandValidator : AbstractValidator<CreateLocationCo
         _locationQueriesRepository = locationQueriesRepository;
 
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Name field is required.")
-            .MaximumLength(255).WithMessage("Length can't be longer than 255.")
-            .MustAsync(IsUniqueName).WithMessage("Unique name is required.");
+            .NotEmpty().WithMessage(Name.NotEmpty)
+            .MaximumLength(255).WithMessage(Name.MaximumLength)
+            .MustAsync(IsUniqueName).WithMessage(Name.IsUnique);
 
         RuleFor(x => x.City)
-            .NotEmpty().WithMessage("City field is required.")
-            .MaximumLength(55).WithMessage("Length can't be longer than 55.");
+            .NotEmpty().WithMessage(City.NotEmpty)
+            .MaximumLength(55).WithMessage(City.MaximumLength);
     }
 
     private async Task<bool> IsUniqueName(string name, CancellationToken cancellationToken)

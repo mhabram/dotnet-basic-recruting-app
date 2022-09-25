@@ -26,13 +26,13 @@ public class LocationQueriesRepository : ILocationQueriesRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<bool> IsUniqueLocationName(string name, CancellationToken cancellationToken = default)
+    public async Task<bool> IsUniqueLocationNameAsync(string name, CancellationToken cancellationToken = default)
     {
-        var location = await _context.Locations
+        var locationEntity = await _context.Locations
             .FirstOrDefaultAsync(x =>
                 x.Name.Trim().ToLower() == name.Trim().ToLower(),
                 cancellationToken);
 
-        return location != null;
+        return locationEntity != null;
     }
 }

@@ -28,11 +28,11 @@ public class TeamQueriesRepository : ITeamQueriesRepository
 
     public async Task<bool> IsUniqueTeamNameAsync(string name, CancellationToken cancellationToken = default)
     {
-        var team = await _context.Teams
+        var teamEntity = await _context.Teams
             .FirstOrDefaultAsync(x =>
                 x.Name.Trim().ToLower() == name.Trim().ToLower(),
                 cancellationToken);
 
-        return team != null;
+        return teamEntity != null;
     }
 }

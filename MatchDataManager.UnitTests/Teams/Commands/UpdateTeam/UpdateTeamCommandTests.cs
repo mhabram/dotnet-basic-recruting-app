@@ -4,6 +4,7 @@ using MatchDataManager.UnitTests.Teams.Mocks;
 using System;
 using System.Collections.Generic;
 using Xunit;
+using static MatchDataManager.Domain.Common.Constants.ErrorMessages;
 
 namespace MatchDataManager.UnitTests.Teams.Commands.UpdateTeam;
 
@@ -39,7 +40,7 @@ public class UpdateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals("Unique name is required.");
+        result.Equals(Name.NotEmpty);
     }
 
     [Fact]
@@ -53,7 +54,7 @@ public class UpdateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals("Length can't be longer than 255.");
+        result.Equals(Name.MaximumLength);
     }
 
     [Fact]
@@ -67,16 +68,16 @@ public class UpdateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals("Length can't be longer than 55.");
+        result.Equals(CoachName.MaximumLength);
     }
 
     public static IEnumerable<object[]> UpdateTeamCommandTestData()
     {
-        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), "", "Karol"), "Name field is required." };
-        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), " ", "Dawid"), "Name field is required." };
-        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), null, "Patryk"), "Name field is required." };
-        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), "GL Team", ""), "Coach name field is required." };
-        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), "RK Team", " "), "Coach name field is required." };
-        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), "KRK Team", null), "Coach name field is required." };
+        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), "", "Karol"), Name.NotEmpty };
+        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), " ", "Dawid"), Name.NotEmpty };
+        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), null, "Patryk"), Name.NotEmpty };
+        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), "GL Team", ""), CoachName.NotEmpty };
+        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), "RK Team", " "), CoachName.NotEmpty };
+        yield return new object[] { new UpdateTeamCommand(Guid.NewGuid(), "KRK Team", null), CoachName.NotEmpty };
     }
 }
