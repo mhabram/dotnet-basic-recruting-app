@@ -6,5 +6,5 @@ public interface ILocationQueriesRepository
 {
     Task<Location?> GetLocationByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<IEnumerable<Location>> GetLocationsAsync(CancellationToken cancellationToken = default);
-    Task<bool> IsUniqueLocationName(string name, CancellationToken cancellationToken = default);
+    Task<bool> IsUniqueLocationNameAsync(string name, CancellationToken cancellationToken = default);
 }

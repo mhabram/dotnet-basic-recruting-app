@@ -1,49 +1,80 @@
+using MatchDataManager.Application.Teams.Commands.CreateTeam;
+using MatchDataManager.Application.Teams.Commands.DeleteTeam;
+using MatchDataManager.Application.Teams.Commands.UpdateTeam;
+using MatchDataManager.Application.Teams.Queries.GetTeamById;
+using MatchDataManager.Application.Teams.Queries.GetTeams;
+using MatchDataManager.Contracts.Teams;
 using MatchDataManager.Domain.Entities;
 using MatchDataManager.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchDataManager.Api.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class TeamsController : ControllerBase
+public class TeamsController : ApiControllerBase
 {
     [HttpPost]
-    public IActionResult AddTeam(Team team)
+    public async Task<IActionResult> CreateTeam(CreateTeamRequest request)
     {
-        TeamsRepository.AddTeam(team);
-        return CreatedAtAction(nameof(GetById), new {id = team.Id}, team);
-    }
+        var team = await Mediator.Send(new CreateTeamCommand(
+            request.Name,
+            request.CoachName));
 
-    [HttpDelete]
-    public IActionResult DeleteTeam(Guid teamId)
-    {
-        TeamsRepository.DeleteTeam(teamId);
-        return NoContent();
-    }
-
-    [HttpGet]
-    public IActionResult Get()
-    {
-        return Ok(TeamsRepository.GetAllTeams());
+        return CreatedAtAction(
+            nameof(GetTeamById),
+            new {id = team.Id},
+            MapTeamResponse(team));
     }
 
     [HttpGet("{id:guid}")]
-    public IActionResult GetById(Guid id)
+    public async Task<IActionResult> GetTeamById(Guid id)
     {
-        var location = TeamsRepository.GetTeamById(id);
-        if (location is null)
-        {
-            return NotFound();
-        }
+        var team = await Mediator.Send(new GetTeamByIdQuery(id));
 
-        return Ok(location);
+        return Ok(MapTeamResponse(team));
     }
 
-    [HttpPut]
-    public IActionResult UpdateTeam(Team team)
+    [HttpGet]
+    public async Task<IActionResult> Get()
     {
-        TeamsRepository.UpdateTeam(team);
-        return Ok(team);
+        var teams = await Mediator.Send(new GetTeamsQuery());
+
+        return Ok(MapTeamsResponse(teams));
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteTeam(Guid id)
+    {
+        await Mediator.Send(new DeleteTeamCommand(id));
+
+        return NoContent();
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateTeam(Guid id, UpdateTeamRequest request)
+    {
+        await Mediator.Send(new UpdateTeamCommand(
+            id,
+            request.Name,
+            request.CoachName));
+
+        return NoContent();
+    }
+
+    private static IEnumerable<TeamResponse> MapTeamsResponse(IEnumerable<Team> teamns)
+    {
+        var teamList = new List<TeamResponse>();
+
+        foreach (var team in teamns)
+            teamList.Add(MapTeamResponse(team));
+
+        return teamList;
+    }
+
+    private static TeamResponse MapTeamResponse(Team team)
+    {
+        return new TeamResponse(
+            team.Id,
+            team.Name,
+            team.CoachName);
     }
 }
