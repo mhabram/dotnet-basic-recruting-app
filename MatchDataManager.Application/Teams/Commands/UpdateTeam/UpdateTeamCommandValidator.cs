@@ -27,6 +27,7 @@ public class UpdateTeamCommandValidator : AbstractValidator<UpdateTeamCommand>
 
     private async Task<bool> IsUniqueName(string name, CancellationToken cancellationToken)
     {
+        var test = await _teamQueriesReporitory.IsUniqueTeamNameAsync(name, cancellationToken);
         return await _teamQueriesReporitory.IsUniqueTeamNameAsync(name, cancellationToken);
     }
 }

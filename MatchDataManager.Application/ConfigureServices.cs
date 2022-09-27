@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using MatchDataManager.Application.Common.Behaviors;
+using MatchDataManager.Application.Common.Exceptions.Shared;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -11,6 +13,8 @@ public static class ConfigureServices
     {
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return services;
     }

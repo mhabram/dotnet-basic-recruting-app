@@ -19,7 +19,8 @@ public class UpdateLocationCommandHandler : IRequestHandler<UpdateLocationComman
             .UpdateLocationAsync(new Location(
                 request.Id,
                 request.Name,
-                request.City));
+                request.City),
+                cancellationToken);
 
         return await Task.FromResult(Unit.Value);
     }

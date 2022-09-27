@@ -2,21 +2,21 @@
 using MatchDataManager.Domain.Entities;
 using MediatR;
 
-namespace MatchDataManager.Application.Locations.Queries.GetLocation;
+namespace MatchDataManager.Application.Locations.Queries.GetLocationById;
 
-public class GetLocationQueryHandler : IRequestHandler<GetLocationQuery, Location>
+public class GetLocationByIdQueryHandler : IRequestHandler<GetLocationByIdQuery, Location?>
 {
     private readonly ILocationQueriesRepository _locationQueriesRepository;
 
-    public GetLocationQueryHandler(ILocationQueriesRepository locationQueriesRepository)
+    public GetLocationByIdQueryHandler(ILocationQueriesRepository locationQueriesRepository)
     {
         _locationQueriesRepository = locationQueriesRepository;
     }
 
-    public async Task<Location> Handle(GetLocationQuery request, CancellationToken cancellationToken)
+    public async Task<Location?> Handle(GetLocationByIdQuery request, CancellationToken cancellationToken)
     {
         var locationsEntity = await _locationQueriesRepository.GetLocationByIdAsync(request.Id, cancellationToken);
-        
+
         return locationsEntity;
     }
 }

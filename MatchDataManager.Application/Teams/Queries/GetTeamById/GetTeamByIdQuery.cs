@@ -5,4 +5,4 @@ namespace MatchDataManager.Application.Teams.Queries.GetTeamById;
 
 public record GetTeamByIdQuery(
     Guid Id)
-    : IRequest<Team>;
+    : IRequest<Team?>;
