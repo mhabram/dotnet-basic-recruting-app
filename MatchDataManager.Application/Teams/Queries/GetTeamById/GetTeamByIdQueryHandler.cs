@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MatchDataManager.Application.Teams.Queries.GetTeamById;
 
-public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, Team>
+public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, Team?>
 {
     private readonly ITeamQueriesRepository _teamQueriesRepository;
 
@@ -13,7 +13,7 @@ public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, Team>
         _teamQueriesRepository = teamQueriesRepository;
     }
 
-    public async Task<Team> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Team?> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
     {
         var teamEntity = await _teamQueriesRepository.GetTeamByIdAsync(request.Id, cancellationToken);
 

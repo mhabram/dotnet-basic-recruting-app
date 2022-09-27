@@ -14,7 +14,7 @@ public class DeleteLocationCommandHandler : IRequestHandler<DeleteLocationComman
 
     public async Task<Unit> Handle(DeleteLocationCommand request, CancellationToken cancellationToken)
     {
-        await _locationCommandsRepository.DeleteLocation(request.Id);
+        await _locationCommandsRepository.DeleteLocationAsync(request.Id);
 
         return await Task.FromResult(Unit.Value);
     }

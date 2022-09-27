@@ -1,4 +1,6 @@
-﻿using MatchDataManager.Application.Common.Interfaces.Persistence;
+﻿using MatchDataManager.Application.Common.Exceptions.Repository;
+using MatchDataManager.Application.Common.Exceptions.Team;
+using MatchDataManager.Application.Common.Interfaces.Persistence;
 using MatchDataManager.Application.Common.Interfaces.Persistence.Commands;
 using MatchDataManager.Application.Common.Interfaces.Persistence.Queries;
 using MatchDataManager.Domain.Entities;
@@ -20,31 +22,66 @@ public class TeamCommandsRepository : ITeamCommandsRepository
 
     public async Task CreateTeamAsync(Team teamEntity, CancellationToken cancellationToken = default)
     {
-        _context.Teams.Add(teamEntity);
+        try
+        {
+            _context.Teams.Add(teamEntity);
 
-        await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new SaveToDatabaseException(nameof(CreateTeamAsync), ex);
+        }
     }
 
     public async Task DeleteTeamAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var teamEntity = await _teamQueriesRepository
-            .GetTeamByIdAsync(id, cancellationToken);
+        try
+        {
+            var teamEntity = await _teamQueriesRepository
+                .GetTeamByIdAsync(id, cancellationToken);
 
-        _context.Teams.Remove(teamEntity);
+            if (teamEntity is null)
+                throw new TeamNullException(nameof(DeleteTeamAsync));
 
-        await _context.SaveChangesAsync(cancellationToken);
+            _context.Teams.Remove(teamEntity);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (TeamNullException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new SaveToDatabaseException(nameof(DeleteTeamAsync), ex);
+        }
     }
 
     public async Task UpdateTeamAsync(Team team, CancellationToken cancellationToken = default)
     {
-        var teamEntity = await _teamQueriesRepository
-            .GetTeamByIdAsync(team.Id, cancellationToken);
+        try
+        {
+            var teamEntity = await _teamQueriesRepository
+                .GetTeamByIdAsync(team.Id, cancellationToken);
 
-        teamEntity.Name = team.Name;
-        teamEntity.CoachName = team.CoachName;
+            if (teamEntity is null)
+                throw new TeamNullException(nameof(UpdateTeamAsync));
 
-        await _context.Teams.AddAsync(teamEntity, cancellationToken);
+            teamEntity.Name = team.Name;
+            teamEntity.CoachName = team.CoachName;
 
-        await _context.SaveChangesAsync(cancellationToken);
+            _context.Teams.Update(teamEntity);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (TeamNullException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new SaveToDatabaseException(nameof(UpdateTeamAsync), ex);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using MatchDataManager.Application.Common.Interfaces.Persistence;
+﻿using MatchDataManager.Application.Common.Exceptions.Location;
+using MatchDataManager.Application.Common.Exceptions.Repository;
+using MatchDataManager.Application.Common.Interfaces.Persistence;
 using MatchDataManager.Application.Common.Interfaces.Persistence.Commands;
 using MatchDataManager.Application.Common.Interfaces.Persistence.Queries;
 using MatchDataManager.Domain.Entities;
@@ -21,32 +23,67 @@ public class LocationCommandsRepository : ILocationCommandsRepository
 
     public async Task CreateLocationAsync(Location location, CancellationToken cancellationToken = default)
     {
-        await _context.Locations
-            .AddAsync(location, cancellationToken);
+        try
+        {
+            await _context.Locations
+                .AddAsync(location, cancellationToken);
         
-        await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new SaveToDatabaseException(nameof(CreateLocationAsync), ex);
+        }
     }
 
-    public async Task DeleteLocation(Guid id, CancellationToken cancellationToken = default)
+    public async Task DeleteLocationAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var locationEntity = await _locationQueriesRepository
-            .GetLocationByIdAsync(id, cancellationToken);
+        try
+        {
+            var locationEntity = await _locationQueriesRepository
+                .GetLocationByIdAsync(id, cancellationToken);
 
-        _context.Locations.Remove(locationEntity);
+            if (locationEntity is null)
+                throw new LocationNullException(nameof(DeleteLocationAsync));
 
-        await _context.SaveChangesAsync(cancellationToken);
+            _context.Locations.Remove(locationEntity);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (LocationNullException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new SaveToDatabaseException(nameof(CreateLocationAsync), ex);
+        }
     }
 
     public async Task UpdateLocationAsync(Location location, CancellationToken cancellationToken = default)
     {
-        var locationEntity = await _locationQueriesRepository
-            .GetLocationByIdAsync(location.Id, cancellationToken);
+        try
+        {
+            var locationEntity = await _locationQueriesRepository
+                .GetLocationByIdAsync(location.Id, cancellationToken);
 
-        locationEntity.Name = location.Name;
-        locationEntity.City = location.City;
+            if (locationEntity is null)
+                throw new LocationNullException(nameof(UpdateLocationAsync));
 
-        _context.Locations.Update(locationEntity);
+            locationEntity.Name = location.Name;
+            locationEntity.City = location.City;
 
-        await _context.SaveChangesAsync(cancellationToken);
+            _context.Locations.Update(locationEntity);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (LocationNullException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new SaveToDatabaseException(nameof(UpdateLocationAsync), ex);
+        }
     }
 }

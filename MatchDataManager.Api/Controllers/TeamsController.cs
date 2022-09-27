@@ -5,7 +5,6 @@ using MatchDataManager.Application.Teams.Queries.GetTeamById;
 using MatchDataManager.Application.Teams.Queries.GetTeams;
 using MatchDataManager.Contracts.Teams;
 using MatchDataManager.Domain.Entities;
-using MatchDataManager.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchDataManager.Api.Controllers;
@@ -21,7 +20,7 @@ public class TeamsController : ApiControllerBase
 
         return CreatedAtAction(
             nameof(GetTeamById),
-            new {id = team.Id},
+            new { id = team.Id },
             MapTeamResponse(team));
     }
 
@@ -65,13 +64,16 @@ public class TeamsController : ApiControllerBase
         var teamList = new List<TeamResponse>();
 
         foreach (var team in teamns)
-            teamList.Add(MapTeamResponse(team));
+            teamList.Add(MapTeamResponse(team)!);
 
         return teamList;
     }
 
-    private static TeamResponse MapTeamResponse(Team team)
+    private static TeamResponse? MapTeamResponse(Team? team)
     {
+        if (team is null)
+            return null;
+
         return new TeamResponse(
             team.Id,
             team.Name,

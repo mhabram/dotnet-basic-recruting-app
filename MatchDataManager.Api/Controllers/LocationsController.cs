@@ -1,7 +1,7 @@
 using MatchDataManager.Application.Locations.Commands.CreateLocation;
 using MatchDataManager.Application.Locations.Commands.DeleteLocation;
 using MatchDataManager.Application.Locations.Commands.UpdateLocation;
-using MatchDataManager.Application.Locations.Queries.GetLocation;
+using MatchDataManager.Application.Locations.Queries.GetLocationById;
 using MatchDataManager.Application.Locations.Queries.GetLocations;
 using MatchDataManager.Contracts.Locations;
 using MatchDataManager.Domain.Entities;
@@ -20,14 +20,14 @@ public class LocationsController : ApiControllerBase
 
         return CreatedAtAction(
             nameof(GetLocationById),
-            new { id = location.Id},
+            new { id = location.Id },
             MapLocationResponse(location));
     }
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetLocationById(Guid id)
     {
-        var location = await Mediator.Send(new GetLocationQuery(id));
+        var location = await Mediator.Send(new GetLocationByIdQuery(id));
 
         return Ok(MapLocationResponse(location));
     }
@@ -64,13 +64,16 @@ public class LocationsController : ApiControllerBase
         var locationList = new List<LocationResponse>();
 
         foreach (var location in locations)
-            locationList.Add(MapLocationResponse(location));
+            locationList.Add(MapLocationResponse(location)!);
 
         return locationList;
     }
 
-    private static LocationResponse MapLocationResponse(Location location)
+    private static LocationResponse? MapLocationResponse(Location? location)
     {
+        if (location is null)
+            return null;
+
         return new LocationResponse(
             location.Id,
             location.Name,

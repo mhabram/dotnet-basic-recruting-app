@@ -18,8 +18,15 @@ public static class ConfigureServices
     {
         services.AddApplicationDbContext(configuration);
 
+        #region Commands
         services.AddScoped<ILocationCommandsRepository, LocationCommandsRepository>();
+        services.AddScoped<ITeamCommandsRepository, TeamCommandsRepository>();
+        #endregion
+
+        #region Queries
         services.AddScoped<ILocationQueriesRepository, LocationQueriesRepository>();
+        services.AddScoped<ITeamQueriesRepository, TeamQueriesRepository>();
+        #endregion
 
         return services;
     }

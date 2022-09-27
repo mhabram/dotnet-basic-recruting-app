@@ -17,22 +17,25 @@ public class TeamQueriesRepository : ITeamQueriesRepository
     public async Task<Team?> GetTeamByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Teams
+            .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
     public async Task<IEnumerable<Team>> GetTeamsAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Teams
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
     public async Task<bool> IsUniqueTeamNameAsync(string name, CancellationToken cancellationToken = default)
     {
         var teamEntity = await _context.Teams
+            .AsNoTracking()
             .FirstOrDefaultAsync(x =>
                 x.Name.Trim().ToLower() == name.Trim().ToLower(),
                 cancellationToken);
 
-        return teamEntity != null;
+        return teamEntity == null;
     }
 }

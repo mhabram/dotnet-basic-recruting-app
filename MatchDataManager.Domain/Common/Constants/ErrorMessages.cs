@@ -32,6 +32,10 @@ public static class ErrorMessages
 
     public static class Exception
     {
-        public const string ErrorOccurred = "An error occurred while initializing the database.";
+        public const string ErrorOccurred = "An error occurred while initializing the database";
+        public const string UnexpectedErrorOccurred = "An unexpected error occurred";
+        public const string InvalidDataProvided = "Invalid data provided";
+        public const string DatabaseSaveError = "An Error occured while saving to the database";
+        public const string NotFound = "The resource requested could not be found on this server";
     }
 }
