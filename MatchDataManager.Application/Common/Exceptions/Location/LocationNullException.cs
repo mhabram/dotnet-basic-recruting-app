@@ -9,6 +9,13 @@ public class LocationNullException : Exception, IServiceException
     private readonly string _message = ErrorMessages.Exception.NotFound;
     private readonly HttpStatusCode _statusCode = HttpStatusCode.NotFound;
 
+
+    public LocationNullException()
+    {
+        StatusCode = _statusCode;
+        ErrorMessage = _message;
+    }
+
     public LocationNullException(string? message) : base(message)
     {
         StatusCode = _statusCode;

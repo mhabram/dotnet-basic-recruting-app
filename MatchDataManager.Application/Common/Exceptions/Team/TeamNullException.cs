@@ -9,6 +9,11 @@ public class TeamNullException : Exception, IServiceException
     private readonly string _message = ErrorMessages.Exception.NotFound;
     private readonly HttpStatusCode _statusCode = HttpStatusCode.NotFound;
 
+    public TeamNullException()
+    {
+        StatusCode = _statusCode;
+        ErrorMessage = _message;
+    }
     public TeamNullException(string? message) : base(message)
     {
         StatusCode = _statusCode;
