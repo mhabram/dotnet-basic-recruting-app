@@ -27,7 +27,8 @@ public class UpdateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals(expected);
+        foreach (var error in result.Result.Errors)
+            Assert.Equal(expected, error.ErrorMessage);
     }
 
     [Fact]
@@ -39,7 +40,8 @@ public class UpdateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals(Name.NotEmpty);
+        foreach (var error in result.Result.Errors)
+            Assert.Equal(Name.IsUnique, error.ErrorMessage);
     }
 
     [Fact]
@@ -54,7 +56,8 @@ public class UpdateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals(Name.MaximumLength);
+        foreach (var error in result.Result.Errors)
+            Assert.Equal(Name.MaximumLength, error.ErrorMessage);
     }
 
     [Fact]
@@ -69,7 +72,8 @@ public class UpdateLocationCommandTests
 
         var result = validator.ValidateAsync(locationCommand);
 
-        result.Equals(City.MaximumLength);
+        foreach (var error in result.Result.Errors)
+            Assert.Equal(City.MaximumLength, error.ErrorMessage);
     }
 
     public static IEnumerable<object[]> UpdateLocationCommandTestData()
