@@ -27,7 +27,8 @@ public class UpdateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals(expected);
+        foreach (var error in result.Result.Errors)
+            Assert.Equal(expected, error.ErrorMessage);
     }
 
 
@@ -40,7 +41,8 @@ public class UpdateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals(Name.NotEmpty);
+        foreach (var error in result.Result.Errors)
+            Assert.Equal(Name.IsUnique, error.ErrorMessage);
     }
 
     [Fact]
@@ -54,7 +56,8 @@ public class UpdateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals(Name.MaximumLength);
+        foreach (var error in result.Result.Errors)
+            Assert.Equal(Name.MaximumLength, error.ErrorMessage);
     }
 
     [Fact]
@@ -68,7 +71,8 @@ public class UpdateTeamCommandTests
 
         var result = validator.ValidateAsync(teamCommand);
 
-        result.Equals(CoachName.MaximumLength);
+        foreach (var error in result.Result.Errors)
+            Assert.Equal(CoachName.MaximumLength, error.ErrorMessage);
     }
 
     public static IEnumerable<object[]> UpdateTeamCommandTestData()
